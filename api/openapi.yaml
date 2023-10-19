@@ -1,0 +1,179 @@
+openapi: 3.0.0
+info:
+  title: Test Generator API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /ping:
+    get:
+      tags:
+        - ping
+      summary: Open Route test used to verify service (no token needed)
+      description: Open Route test used to verify service (no token needed)
+      responses:
+        "200":
+          description: OK - RESPONSE PONG
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ping_response"
+  /generateDocIniciative:
+    post:
+      tags:
+        - documentator
+      summary: Generate documentation for initiatives
+      description: Generates documentation for the specified initiative data
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/initiative_data"
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: UNAUTHORIZED - INVALID_ACCESS_TOKEN
+        "422":
+          description: UNPROCESSABLE ENTITY - INVALID JSON DATA
+  /generateDocFeatures:
+    post:
+      tags:
+        - documentator
+      summary: Generate documentation for features
+      description: Generates documentation for the specified feature data
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/feature_data"
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: UNAUTHORIZED - INVALID_ACCESS_TOKEN
+        "422":
+          description: UNPROCESSABLE ENTITY - INVALID JSON DATA
+  /generateDocUserStory:
+    post:
+      tags:
+        - documentator
+      summary: Generate documentation for user stories
+      description: Generates documentation for the specified user story data
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/user_story_data"
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: UNAUTHORIZED - INVALID_ACCESS_TOKEN
+        "422":
+          description: UNPROCESSABLE ENTITY - INVALID JSON DATA
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    ping_response:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP response status
+              example: "200"
+            ping:
+              type: string
+              description: ping result message
+              example: PONG
+    initiative_data:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Plataforma de Ideación"
+        description:
+          type: string
+          example: "Crear una plataforma en línea para recopilar ideas de manera colaborativa y votar por las mejores."
+      example:
+        title: "Plataforma de Ideación"
+        description: "Crear una plataforma en línea para recopilar ideas de manera colaborativa y votar por las mejores."
+    feature_data:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Crear plataforma de registro"
+        description:
+          type: string
+          example: "Permitir a los usuarios registrarse en la plataforma de ideación"
+        userStories:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Registro de usuarios"
+              description:
+                type: string
+                example: "Como usuario, quiero poder registrarme en la plataforma de ideación"
+              definitionOfReady:
+                type: string
+                example: "La página de registro está diseñada y lista para ser implementada"
+              definitionOfDone:
+                type: string
+                example: "El usuario puede registrarse exitosamente y se almacenan sus datos en la base de datos"
+              hours:
+                type: string
+                example: "10"
+          example:
+            - name: "Registro de usuarios"
+              description: "Como usuario, quiero poder registrarme en la plataforma de ideación"
+              definitionOfReady: "La página de registro está diseñada y lista para ser implementada"
+              definitionOfDone: "El usuario puede registrarse exitosamente y se almacenan sus datos en la base de datos"
+              hours: "10"
+            - name: "Inicio de sesión de usuarios"
+              description: "Como usuario registrado, quiero poder iniciar sesión en la plataforma de ideación"
+              definitionOfReady: "La página de inicio de sesión está diseñada y lista para ser implementada"
+              definitionOfDone: "El usuario puede iniciar sesión exitosamente y se le redirige a la página principal"
+              hours: "8"
+    user_story_data:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Registro de usuarios"
+        description:
+          type: string
+          example: "Como usuario, quiero poder registrarme en la plataforma de ideación"
+        definitionOfReady:
+          type: string
+          example: "La página de registro está diseñada y lista para ser implementada"
+        acceptanceCriteria:
+          type: string
+          example: "El usuario puede registrarse exitosamente y se almacenan sus datos en la base de datos"
+        hours:
+          type: string
+          example: "10"
+      example:
+        name: "Registro de usuarios"
+        description: "Como usuario, quiero poder registrarme en la plataforma de ideación"
+        definitionOfReady: "La página de registro está diseñada y lista para ser implementada"
+        acceptanceCriteria: "El usuario puede registrarse exitosamente y se almacenan sus datos en la base de datos"
+        hours: "10"
